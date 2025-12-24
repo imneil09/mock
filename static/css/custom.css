@@ -1,0 +1,140 @@
+/* IMPORT FONT: Inter (Clean, modern, professional) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary-color: #2563eb; /* Royal Blue */
+    --secondary-color: #f59e0b; /* Amber/Gold */
+    --dark-bg: #0f172a;
+    --light-bg: #f3f4f6;
+    --card-bg: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border-radius: 12px;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--light-bg);
+    color: var(--text-main);
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* --- SIDEBAR STYLING --- */
+.sidebar {
+    background: #ffffff;
+    border-right: 1px solid rgba(0,0,0,0.05);
+    z-index: 1000;
+}
+
+.nav-link {
+    color: var(--text-muted);
+    font-weight: 500;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    margin-bottom: 5px;
+}
+
+.nav-link:hover {
+    background-color: #f1f5f9;
+    color: var(--primary-color);
+}
+
+.nav-link.active {
+    background-color: #eff6ff; /* Light Blue BG */
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* --- KICK-ASS CARD DESIGN --- */
+.ka-card {
+    background: var(--card-bg);
+    border: none;
+    border-radius: var(--border-radius);
+    /* Soft, expensive-looking shadow */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+}
+
+.ka-card:hover {
+    /* Slight lift effect on hover */
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* --- EXAM INTERFACE SPECIFIC --- */
+/* The circular buttons in the question palette */
+.question-palette-btn {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.qp-current { 
+    border: 2px solid var(--primary-color); 
+    background-color: #eff6ff;
+    color: var(--primary-color);
+    transform: scale(1.1); 
+}
+.qp-review { 
+    background-color: #a855f7; /* Purple */
+    color: white; 
+    border-color: #a855f7; 
+}
+
+/* --- RADIO BUTTONS (The Options) --- */
+.option-label {
+    display: block;
+    padding: 15px 20px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    background: white;
+}
+
+.option-label:hover {
+    border-color: #cbd5e1;
+    background-color: #f8fafc;
+}
+
+/* When the radio input is checked, style the label */
+.option-input:checked + .option-label {
+    border-color: var(--primary-color);
+    background-color: #eff6ff;
+    color: var(--primary-color);
+    font-weight: 600;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); /* Blue glow */
+}
+
+/* Hide the actual default ugly radio button */
+.option-input { 
+    display: none; 
+}
+
+/* --- ANIMATIONS --- */
+.fade-in-up {
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 20px, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}

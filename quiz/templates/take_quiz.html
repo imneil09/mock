@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid" 
+     x-data="{ 
+        timeLeft: {{ quiz.time_limit_minutes }} * 60, 
+        currentQ: 1, 
+        totalQ: {{ questions|length }},
+        markedReview: [],
+        timerDisplay() {
+            let m = Math.floor(this.timeLeft / 60);
+            let s = this.timeLeft % 60;
+            return `${m}:${s < 10 ? '0' + s : s}`;
+        }
+     }" 
+     x-init="setInterval(() => timeLeft > 0 ? timeLeft-- : null, 1000)">
+
+    <div class="ka-card p-3 mb-4 d-flex justify-content-between align-items-center sticky-top shadow-sm" style="z-index: 900;">
+        <h5 class="m-0 fw-bold text-primary">{{ quiz.title }}</h5>
+        <div class="fs-4 fw-bold font-monospace text-danger" x-text="timerDisplay()"></div>
+    </div>
+
+    <form method="POST" action="" id="quiz-form">
+        {% csrf_token %}
+        
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="ka-card p-4 p-md-5" style="min-height: 60vh;">
+                    
+                    {% for q in questions %}
+                    <div x-show="currentQ === {{ forloop.counter }}">
+                        
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">
+                                Question {{ forloop.counter }} of {{ questions|length }}
+                            </span>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" 
+                                    @click="markedReview.includes({{ forloop.counter }}) ? markedReview = markedReview.filter(i => i !== {{ forloop.counter }}) : markedReview.push({{ forloop.counter }})">
+                                <i class="fas fa-bookmark me-1"></i> Mark Review
+                            </button>
+                        </div>
+
+                        <h4 class="fw-bold mb-4 lh-base">{{ q.text }}</h4>
+
+                        <div class="d-grid gap-3">
+                            {% for choice in q.choices.all %}
+                            <div>
+                                <input type="radio" 
+                                       name="q_{{ q.id }}" 
+                                       id="opt_{{ choice.id }}" 
+                                       value="{{ choice.id }}" 
+                                       class="option-input">
+                                       
+                                <label for="opt_{{ choice.id }}" class="option-label">
+                                    <span class="fw-bold me-2">{{ choice.label }}.</span> {{ choice.text }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                    {% endfor %}
+                    <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+                        <button type="button" class="btn btn-light fw-bold px-4" 
+                                @click="currentQ > 1 ? currentQ-- : null">
+                            Previous
+                        </button>
+                        <button type="button" class="btn btn-primary fw-bold px-4" 
+                                @click="currentQ < totalQ ? currentQ++ : null">
+                            Save & Next
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="ka-card p-4 h-100">
+                    <h6 class="fw-bold text-uppercase text-muted mb-3">Question Palette</h6>
+                    
+                    <div class="d-flex flex-wrap gap-2 mb-4" style="max-height: 400px; overflow-y: auto;">
+                        <template x-for="i in totalQ">
+                            <div class="question-palette-btn" 
+                                 :class="{
+                                     'qp-current': currentQ === i,
+                                     'qp-review': markedReview.includes(i),
+                                     'bg-light text-muted': currentQ !== i && !markedReview.includes(i)
+                                 }"
+                                 x-text="i"
+                                 @click="currentQ = i">
+                            </div>
+                        </template>
+                    </div>
+
+                    <button type="button" class="btn btn-success w-100 py-2 fw-bold" data-bs-toggle="modal" data-bs-target="#submitModal">
+                        Submit Exam
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" id="realSubmitBtn" hidden></button>
+    </form>
+</div>
+
+<div class="modal fade" id="submitModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold">Ready to Submit?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <p>Are you sure you want to end the test?</p>
+            </div>
+            <div class="modal-footer border-0 justify-content-center pb-4">
+                <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Resume</button>
+                <button type="button" class="btn btn-primary px-4" onclick="document.getElementById('realSubmitBtn').click()">Yes, Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
