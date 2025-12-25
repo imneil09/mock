@@ -21,7 +21,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'core',
+    'quiz',
+    # Add these new lines:
+    'django.contrib.sites',  # Required
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount', # Optional, but good to have
 ]
+
+SITE_ID = 1  # Required by django.contrib.sites
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -31,6 +40,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "allauth.account.middleware.AccountMiddleware",
+]
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 ROOT_URLCONF = 'mock.urls'
