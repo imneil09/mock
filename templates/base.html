@@ -4,58 +4,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CivilServicePrep | TPSC Edition</title>
+    <title>CivilServicePrep | Pro</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
-    
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
 </head>
-<body class="bg-light">
+<body>
 
-    <div class="container-fluid">
-        <div class="row">
-            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar collapse p-3 bg-white border-end" style="min-height: 100vh;">
-                <a href="/" class="d-flex align-items-center mb-4 text-decoration-none">
-                    <span class="fs-4 fw-bold text-primary"><i class="fas fa-graduation-cap me-2"></i>CSP TPSC</span>
-                </a>
-                
-                <ul class="nav nav-pills flex-column mb-auto">
-                    <li class="nav-item mb-2">
-                        <a href="{% url 'dashboard' %}" class="nav-link active">
-                            <i class="fas fa-home me-2"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a href="#" class="nav-link text-dark">
-                            <i class="fas fa-book-open me-2"></i> Practice Sets
-                        </a>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a href="#" class="nav-link text-dark">
-                            <i class="fas fa-chart-line me-2"></i> Analytics
-                        </a>
-                    </li>
-                </ul>
-                
-                <div class="mt-auto pt-4 border-top">
-                    <div class="d-flex align-items-center">
-                        <div class="bg-secondary rounded-circle text-white d-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px;">
-                            {{ user.username|slice:":1"|upper }}
-                        </div>
-                        <strong>{{ user.username }}</strong>
+    <div class="d-flex">
+        <aside class="sidebar-nav d-flex flex-column flex-shrink-0 p-4" style="width: 280px; position: fixed; z-index: 1000;">
+            <a href="/" class="d-flex align-items-center mb-5 text-decoration-none">
+                <div class="bg-primary text-white rounded-3 d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                    <i class="fas fa-graduation-cap fa-lg"></i>
+                </div>
+                <span class="fs-4 fw-bold text-dark tracking-tight">CSP Pro</span>
+            </a>
+            
+            <ul class="nav nav-pills flex-column mb-auto gap-2">
+                <li>
+                    <a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                        <i class="fas fa-th-large"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-book-reader"></i> My Library
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-chart-pie"></i> Analytics
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'submit_question' %}" class="nav-link {% if request.resolver_match.url_name == 'submit_question' %}active{% endif %}">
+                        <i class="fas fa-plus-circle"></i> Contribute
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="mt-auto pt-4 border-top">
+                <div class="d-flex align-items-center p-2 rounded-3 hover-bg-light">
+                    <div class="bg-gradient bg-primary rounded-circle text-white d-flex align-items-center justify-content-center me-3 shadow-sm" style="width: 38px; height: 38px;">
+                        {{ user.username|slice:":1"|upper }}
+                    </div>
+                    <div>
+                        <div class="fw-bold text-dark">{{ user.username }}</div>
+                        <div class="small text-muted" style="font-size: 0.75rem;">Free Plan</div>
                     </div>
                 </div>
-            </nav>
+            </div>
+        </aside>
 
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+        <main class="flex-grow-1" style="margin-left: 280px; min-height: 100vh;">
+            <div class="container-fluid p-4 p-lg-5">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} border-0 shadow-sm rounded-3 mb-4">
+                            <i class="fas fa-info-circle me-2"></i> {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
                 {% block content %}
                 {% endblock %}
-            </main>
-        </div>
+            </div>
+        </main>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

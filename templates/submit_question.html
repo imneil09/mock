@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="ka-card p-5 bg-white shadow-sm rounded-3">
+                <h2 class="fw-bold mb-4 text-primary">Contribute a Question</h2>
+                <p class="text-muted mb-4">Help the community grow! Your question will be reviewed by our admins.</p>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Subject</label>
+                            {{ form.subject }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Difficulty</label>
+                            {{ form.difficulty }}
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label fw-bold">Question Text</label>
+                            {{ form.text }}
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <h5 class="fw-bold border-bottom pb-2 mb-3">Answer Options</h5>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Option A</label>
+                            <input type="text" name="option_1" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Option B</label>
+                            <input type="text" name="option_2" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Option C</label>
+                            <input type="text" name="option_3" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Option D</label>
+                            <input type="text" name="option_4" class="form-control" required>
+                        </div>
+
+                        <div class="col-12 mt-3">
+                            <label class="form-label fw-bold text-success">Select Correct Answer</label>
+                            <div class="d-flex gap-4">
+                                {% for radio in form.correct_option %}
+                                    <div class="form-check">
+                                        {{ radio.tag }}
+                                        <label class="form-check-label">{{ radio.choice_label }}</label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label fw-bold">Explanation (Optional)</label>
+                            {{ form.explanation }}
+                        </div>
+                    </div>
+
+                    <div class="mt-4 text-end">
+                        <a href="{% url 'dashboard' %}" class="btn btn-light me-2">Cancel</a>
+                        <button type="submit" class="btn btn-primary fw-bold px-4">Submit Question</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

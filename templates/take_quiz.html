@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid px-0" 
+     x-data="{ 
+        timeLeft: {{ quiz.time_limit_minutes }} * 60, 
+        currentQ: 1, 
+        totalQ: {{ questions|length }},
+        markedReview: [],
+        answered: [],
+        timerDisplay() {
+            let m = Math.floor(this.timeLeft / 60);
+            let s = this.timeLeft % 60;
+            return `${m}:${s < 10 ? '0' + s : s}`;
+        }
+     }" 
+     x-init="setInterval(() => timeLeft > 0 ? timeLeft-- : null, 1000)">
+
+    <div class="ka-card p-3 mb-4 d-flex justify-content-between align-items-center sticky-top shadow-md z-3 border-0">
+        <div>
+            <h5 class="m-0 fw-bold text-dark">{{ quiz.title }}</h5>
+            <small class="text-muted">{{ quiz.subject.name }}</small>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <div class="bg-danger bg-opacity-10 text-danger px-4 py-2 rounded-pill fw-bold font-monospace fs-5 border border-danger-subtle">
+                <i class="far fa-clock me-2"></i><span x-text="timerDisplay()"></span>
+            </div>
+            <button class="btn btn-success fw-bold px-4" data-bs-toggle="modal" data-bs-target="#submitModal">
+                Submit
+            </button>
+        </div>
+    </div>
+
+    <form method="POST" action="" id="quiz-form">
+        {% csrf_token %}
+        
+        <div class="row g-4">
+            <div class="col-lg-9">
+                <div class="ka-card p-5 static min-vh-75 position-relative">
+                    
+                    {% for q in questions %}
+                    <div x-show="currentQ === {{ forloop.counter }}" x-transition.opacity>
+                        
+                        <div class="d-flex justify-content-between align-items-center mb-5 pb-3 border-bottom">
+                            <span class="text-primary fw-bold text-uppercase small tracking-wider">
+                                Question {{ forloop.counter }} <span class="text-muted">/ {{ questions|length }}</span>
+                            </span>
+                            <div class="d-flex gap-2">
+                                <span class="badge bg-light text-dark border px-3 py-2 rounded-pill">
+                                    {{ q.get_difficulty_display|default:"Medium" }}
+                                </span>
+                                <button type="button" class="btn btn-outline-warning btn-sm fw-bold border-2 rounded-pill px-3"
+                                        @click="markedReview.includes({{ forloop.counter }}) ? markedReview = markedReview.filter(i => i !== {{ forloop.counter }}) : markedReview.push({{ forloop.counter }})">
+                                    <i class="fas fa-flag me-1"></i> Review
+                                </button>
+                            </div>
+                        </div>
+
+                        <h4 class="fw-bold mb-5 lh-base text-dark">{{ q.text }}</h4>
+
+                        <div class="d-grid gap-3 mb-5" style="max-width: 700px;">
+                            {% for choice in q.choices.all %}
+                            <div>
+                                <input type="radio" 
+                                       name="q_{{ q.id }}" 
+                                       id="opt_{{ choice.id }}" 
+                                       value="{{ choice.id }}" 
+                                       class="option-input"
+                                       @change="if(!answered.includes({{ forloop.parentloop.counter }})) answered.push({{ forloop.parentloop.counter }})">
+                                       
+                                <label for="opt_{{ choice.id }}" class="option-label">
+                                    <div class="option-circle"></div>
+                                    <span class="fs-5 text-dark">{{ choice.text }}</span>
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <div class="d-flex justify-content-between mt-auto pt-4">
+                        <button type="button" class="btn btn-light btn-lg px-5 fw-bold" 
+                                @click="currentQ > 1 ? currentQ-- : null"
+                                :disabled="currentQ === 1">
+                            <i class="fas fa-arrow-left me-2"></i> Previous
+                        </button>
+                        <button type="button" class="btn btn-primary btn-lg px-5 fw-bold shadow-lg" 
+                                @click="currentQ < totalQ ? currentQ++ : null"
+                                x-show="currentQ < totalQ">
+                            Next Question <i class="fas fa-arrow-right ms-2"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <div class="ka-card p-4 h-100 static">
+                    <h6 class="fw-bold text-uppercase text-muted mb-4 small tracking-wider">Question Palette</h6>
+                    
+                    <div class="palette-grid mb-4" style="max-height: 400px; overflow-y: auto;">
+                        <template x-for="i in totalQ">
+                            <div class="palette-item" 
+                                 :class="{
+                                     'active': currentQ === i,
+                                     'review': markedReview.includes(i),
+                                     'solved': answered.includes(i) && !markedReview.includes(i) && currentQ !== i
+                                 }"
+                                 x-text="i"
+                                 @click="currentQ = i">
+                            </div>
+                        </template>
+                    </div>
+
+                    <div class="d-flex gap-3 flex-wrap small text-muted mb-4">
+                        <div class="d-flex align-items-center"><span class="bg-primary rounded-circle w-2 h-2 me-2" style="width:10px;height:10px;"></span> Current</div>
+                        <div class="d-flex align-items-center"><span class="bg-success rounded-circle w-2 h-2 me-2" style="width:10px;height:10px;"></span> Solved</div>
+                        <div class="d-flex align-items-center"><span class="bg-warning rounded-circle w-2 h-2 me-2" style="width:10px;height:10px;"></span> Review</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" id="realSubmitBtn" hidden></button>
+    </form>
+</div>
+
+<div class="modal fade" id="submitModal" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+            <div class="modal-body text-center py-5">
+                <div class="mb-4 text-warning">
+                    <i class="fas fa-exclamation-circle fa-4x"></i>
+                </div>
+                <h3 class="fw-bold mb-3">Submit Quiz?</h3>
+                <p class="text-muted mb-4">You are about to finish this test. <br>You cannot change your answers after submission.</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <button type="button" class="btn btn-light fw-bold px-4" data-bs-dismiss="modal">Resume Test</button>
+                    <button type="button" class="btn btn-primary fw-bold px-5" onclick="document.getElementById('realSubmitBtn').click()">Yes, Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

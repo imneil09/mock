@@ -1,107 +1,134 @@
 /* IMPORT FONT: Inter (Clean, modern, professional) */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-    --primary-color: #2563eb; /* Royal Blue */
-    --secondary-color: #f59e0b; /* Amber/Gold */
-    --dark-bg: #0f172a;
-    --light-bg: #f3f4f6;
-    --card-bg: #ffffff;
-    --text-main: #1e293b;
-    --text-muted: #64748b;
-    --border-radius: 12px;
+    /* Brand Colors */
+    --primary: #4f46e5;       /* Indigo-600 */
+    --primary-hover: #4338ca; /* Indigo-700 */
+    --secondary: #64748b;     /* Slate-500 */
+    --success: #10b981;       /* Emerald-500 */
+    --danger: #ef4444;        /* Red-500 */
+    --warning: #f59e0b;       /* Amber-500 */
+    
+    /* Backgrounds */
+    --bg-body: #f8fafc;       /* Slate-50 */
+    --bg-card: #ffffff;
+    --bg-sidebar: #ffffff;
+    
+    /* Text */
+    --text-main: #0f172a;     /* Slate-900 */
+    --text-muted: #64748b;    /* Slate-500 */
+    
+    /* UI Elements */
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+    
+    /* Shadows - The "Kick-Ass" Secret */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-hover: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
 body {
     font-family: 'Inter', sans-serif;
-    background-color: var(--light-bg);
+    background-color: var(--bg-body);
     color: var(--text-main);
-    overflow-x: hidden; /* Prevent horizontal scroll */
+    -webkit-font-smoothing: antialiased;
 }
 
-/* --- SIDEBAR STYLING --- */
-.sidebar {
-    background: #ffffff;
-    border-right: 1px solid rgba(0,0,0,0.05);
-    z-index: 1000;
+/* --- COMPONENTS --- */
+
+/* 1. Super Cards */
+.ka-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ka-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(79, 70, 229, 0.1);
+}
+
+.ka-card.static:hover {
+    transform: none;
+    box-shadow: var(--shadow-sm);
+}
+
+/* 2. Modern Buttons */
+.btn-primary {
+    background-color: var(--primary);
+    border: none;
+    padding: 10px 24px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+    transition: all 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 8px -1px rgba(79, 70, 229, 0.3);
+}
+
+/* 3. Sidebar */
+.sidebar-nav {
+    min-height: 100vh;
+    background: var(--bg-sidebar);
+    border-right: 1px solid #e2e8f0;
 }
 
 .nav-link {
     color: var(--text-muted);
     font-weight: 500;
-    padding: 10px 15px;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-    margin-bottom: 5px;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.nav-link i {
+    width: 24px;
+    margin-right: 12px;
+    font-size: 1.1em;
+    transition: transform 0.2s;
 }
 
 .nav-link:hover {
     background-color: #f1f5f9;
-    color: var(--primary-color);
+    color: var(--primary);
+}
+
+.nav-link:hover i {
+    transform: translateX(3px);
 }
 
 .nav-link.active {
-    background-color: #eff6ff; /* Light Blue BG */
-    color: var(--primary-color);
+    background-color: rgba(79, 70, 229, 0.08);
+    color: var(--primary);
     font-weight: 600;
 }
 
-/* --- KICK-ASS CARD DESIGN --- */
-.ka-card {
-    background: var(--card-bg);
-    border: none;
-    border-radius: var(--border-radius);
-    /* Soft, expensive-looking shadow */
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    overflow: hidden;
-}
-
-.ka-card:hover {
-    /* Slight lift effect on hover */
-    transform: translateY(-3px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-}
-
-/* --- EXAM INTERFACE SPECIFIC --- */
-/* The circular buttons in the question palette */
-.question-palette-btn {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    font-size: 0.85rem;
-    font-weight: 600;
+/* 4. Quiz Interface Specifics */
+.option-label {
     display: flex;
     align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border: 1px solid #e2e8f0;
-    transition: all 0.2s;
-    user-select: none;
-}
-
-.qp-current { 
-    border: 2px solid var(--primary-color); 
-    background-color: #eff6ff;
-    color: var(--primary-color);
-    transform: scale(1.1); 
-}
-.qp-review { 
-    background-color: #a855f7; /* Purple */
-    color: white; 
-    border-color: #a855f7; 
-}
-
-/* --- RADIO BUTTONS (The Options) --- */
-.option-label {
-    display: block;
-    padding: 15px 20px;
+    padding: 16px 20px;
     border: 2px solid #e2e8f0;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     cursor: pointer;
-    transition: all 0.2s;
-    position: relative;
+    transition: all 0.2s ease;
     background: white;
+    margin-bottom: 12px;
 }
 
 .option-label:hover {
@@ -109,32 +136,76 @@ body {
     background-color: #f8fafc;
 }
 
-/* When the radio input is checked, style the label */
 .option-input:checked + .option-label {
-    border-color: var(--primary-color);
-    background-color: #eff6ff;
-    color: var(--primary-color);
+    border-color: var(--primary);
+    background-color: rgba(79, 70, 229, 0.04);
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+.option-circle {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #cbd5e1;
+    border-radius: 50%;
+    margin-right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.option-input:checked + .option-label .option-circle {
+    border-color: var(--primary);
+    background-color: var(--primary);
+}
+
+.option-circle::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.2s;
+}
+
+.option-input:checked + .option-label .option-circle::after {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.option-input { display: none; }
+
+/* 5. Palette Grid */
+.palette-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.palette-item {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
     font-weight: 600;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); /* Blue glow */
+    font-size: 0.9rem;
+    cursor: pointer;
+    border: 1px solid #e2e8f0;
+    background: white;
+    transition: all 0.2s;
 }
 
-/* Hide the actual default ugly radio button */
-.option-input { 
-    display: none; 
-}
+.palette-item:hover { transform: scale(1.1); border-color: var(--primary); }
+.palette-item.active { background: var(--primary); color: white; border-color: var(--primary); }
+.palette-item.review { background: var(--warning); color: white; border-color: var(--warning); }
+.palette-item.solved { background: var(--success); color: white; border-color: var(--success); }
 
-/* --- ANIMATIONS --- */
-.fade-in-up {
-    animation: fadeInUp 0.5s ease-out forwards;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translate3d(0, 20px, 0);
-    }
-    to {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
-    }
+/* Utilities */
+.text-gradient {
+    background: linear-gradient(135deg, var(--primary) 0%, #818cf8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
