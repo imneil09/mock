@@ -209,3 +209,170 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+/* =========================================
+   KICK ASS AUTH PAGE STYLES
+   ========================================= */
+
+/* 1. Container & Layout */
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+    background: #fff;
+}
+
+/* 2. The Visual Side (Left) - The "Wow" Factor */
+.auth-visuals {
+    flex: 1.2; /* Slightly wider */
+    position: relative;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); /* Dark Slate to Deep Indigo */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px;
+    color: white;
+    z-index: 1;
+}
+
+/* Animated Background Orbs */
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.6;
+    animation: float 20s infinite ease-in-out alternate;
+    z-index: -1;
+}
+.orb-1 {
+    top: -10%; left: -10%; width: 500px; height: 500px;
+    background: #4f46e5; /* Primary */
+    animation-duration: 25s;
+}
+.orb-2 {
+    bottom: -10%; right: -10%; width: 600px; height: 600px;
+    background: #ec4899; /* Pink/Magenta pop */
+    animation-duration: 30s;
+    animation-delay: -5s;
+}
+.orb-3 {
+    top: 40%; left: 40%; width: 300px; height: 300px;
+    background: #06b6d4; /* Cyan */
+    animation-duration: 20s;
+    animation-delay: -10s;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(30px, 50px) scale(1.1); }
+}
+
+/* Glass Card Content on Visual Side */
+.glass-testimonial {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 24px;
+    margin-top: 40px;
+    transform: translateY(0);
+    transition: transform 0.3s;
+}
+.glass-testimonial:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* 3. The Form Side (Right) - Clean & Focused */
+.auth-form-side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+    background: #ffffff;
+    position: relative;
+}
+
+.auth-form-wrapper {
+    width: 100%;
+    max-width: 420px;
+    animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Kick Ass Inputs */
+.ka-input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+.ka-input {
+    width: 100%;
+    padding: 16px 16px 16px 50px; /* Space for icon */
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    background: #f8fafc;
+}
+.ka-input:focus {
+    border-color: var(--primary);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+    outline: none;
+}
+.ka-icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 1.1rem;
+    transition: color 0.2s;
+}
+.ka-input:focus + .ka-icon {
+    color: var(--primary);
+}
+
+/* Kick Ass Button */
+.btn-kickass {
+    background: var(--primary);
+    color: white;
+    font-weight: 700;
+    padding: 16px;
+    border-radius: 12px;
+    border: none;
+    width: 100%;
+    letter-spacing: 0.5px;
+    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+.btn-kickass:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.4);
+    background: #4338ca;
+}
+.btn-kickass:active {
+    transform: translateY(0);
+}
+
+/* Utilities */
+.text-gradient {
+    background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@media (max-width: 992px) {
+    .auth-visuals { display: none; }
+    .auth-form-side { padding: 30px; }
+}

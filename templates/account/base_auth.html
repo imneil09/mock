@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CSP Pro{% endblock %}</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+</head>
+<body>
+
+<div class="auth-container">
+    <div class="auth-visuals">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+
+        <div class="d-flex align-items-center mb-auto position-relative">
+            <div class="bg-white bg-opacity-25 backdrop-blur rounded-3 d-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px;">
+                <i class="fas fa-layer-group fa-lg text-white"></i>
+            </div>
+            <span class="fs-3 fw-bold tracking-tight text-white">CSP Pro</span>
+        </div>
+
+        <div class="position-relative z-2 my-5">
+            <h1 class="display-3 fw-bolder mb-3 text-white" style="line-height: 1.1;">
+                Don't just pass.<br>
+                <span class="text-gradient">Dominate.</span>
+            </h1>
+            <p class="fs-5 text-white opacity-75 fw-light mb-0" style="max-width: 450px;">
+                The most advanced adaptive testing platform for TPSC and Civil Services. Train harder, analyze deeper, and succeed faster.
+            </p>
+        </div>
+
+        <div class="glass-testimonial mt-auto">
+            <div class="d-flex align-items-center mb-3">
+                <div class="d-flex text-warning small me-2">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <span class="text-white-50 small">Top Rated Platform</span>
+            </div>
+            <p class="mb-3 text-white italic">"The analytics on CSP Pro are a game changer. I found my weak spots in History within 2 days."</p>
+            <div class="d-flex align-items-center">
+                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center fw-bold text-white small me-2" style="width: 32px; height: 32px;">R</div>
+                <div>
+                    <div class="fw-bold text-white text-sm">Rahul S.</div>
+                    <div class="text-white-50 small" style="font-size: 12px;">TPSC Aspirant 2025</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-form-side">
+        <div class="auth-form-wrapper">
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} border-0 shadow-sm rounded-3 mb-4 d-flex align-items-center">
+                    <i class="fas fa-info-circle me-2"></i> {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

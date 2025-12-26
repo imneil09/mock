@@ -1,0 +1,51 @@
+{% extends "account/base_auth.html" %}
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block title %}Sign In - CSP Pro{% endblock %}
+
+{% block content %}
+<div class="mb-5">
+    <h2 class="fw-bolder text-dark display-6 mb-2">Welcome Back</h2>
+    <p class="text-muted">Enter your credentials to access your dashboard.</p>
+</div>
+
+<form class="login" method="POST" action="{% url 'account_login' %}">
+    {% csrf_token %}
+
+    {% if form.errors %}
+        <div class="p-3 mb-4 rounded-3 bg-danger bg-opacity-10 border border-danger border-opacity-25 text-danger small fw-bold">
+            <i class="fas fa-exclamation-circle me-2"></i> Username or password incorrect.
+        </div>
+    {% endif %}
+
+    <div class="ka-input-group">
+        <input type="text" name="login" class="ka-input" placeholder="Email or Username" required id="id_login">
+        <i class="far fa-envelope ka-icon"></i>
+    </div>
+
+    <div class="ka-input-group">
+        <input type="password" name="password" class="ka-input" placeholder="Password" required id="id_password">
+        <i class="fas fa-lock ka-icon"></i>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="form-check">
+            <input type="checkbox" name="remember" class="form-check-input" id="id_remember" style="cursor: pointer;">
+            <label class="form-check-label small text-muted user-select-none" for="id_remember">Remember me</label>
+        </div>
+        <a class="text-primary text-decoration-none small fw-bold hover-underline" href="{% url 'account_reset_password' %}">Forgot Password?</a>
+    </div>
+
+    <button class="btn-kickass" type="submit">
+        Log In <i class="fas fa-arrow-right ms-2 opacity-75"></i>
+    </button>
+</form>
+
+<div class="text-center mt-5">
+    <p class="text-muted small">
+        New to CSP Pro? 
+        <a href="{{ signup_url }}" class="text-primary fw-bold text-decoration-none">Create an account</a>
+    </p>
+</div>
+{% endblock %}
